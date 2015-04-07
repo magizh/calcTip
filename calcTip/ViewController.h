@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *amt;
+@property (weak, nonatomic) IBOutlet UISlider *tip;
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+@property (weak,nonatomic) IBOutlet UILabel *total;
 
+-(IBAction)calc:(id)sender;
+-(void)calculate:(int)value;
+-(IBAction)reset;
 
 @end
 
