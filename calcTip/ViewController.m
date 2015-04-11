@@ -70,7 +70,7 @@
 }
 
 -(void)calculate:(float)value {
-    float tot = (value * [tip value])/100.0 ;
+    float tot = value + (value * [tip value])/100.0;
     [total setText: [NSString stringWithFormat: @"$%.2f", tot]];
 }
 
