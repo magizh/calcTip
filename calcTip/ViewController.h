@@ -15,7 +15,6 @@
 @property (weak,nonatomic) IBOutlet UILabel *total;
 
 -(IBAction)calc:(id)sender;
--(void)calculate:(int)value;
 -(IBAction)reset;
 
 @end

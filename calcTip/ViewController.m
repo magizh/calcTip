@@ -19,11 +19,17 @@
 @synthesize amt;
 @synthesize total;
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void) setDefaults {
     [tip setValue:(10)];
     [tipLabel setText:@"10%"];
     [amt becomeFirstResponder];
+    [total setText:(@"$0.00")];
+    [amt setText:@"0.00"];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setDefaults];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -33,44 +39,45 @@
 }
 
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
     
     if ([string rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].location == NSNotFound) {
         return NO;
     }
     NSMutableString *fullString  = [NSMutableString stringWithString:[amt text]];
     [fullString appendString:string];
-    int value = fullString.intValue;
+    float value = fullString.floatValue;
+    value = value * 10;
     [self calculate:value];
+    [amt setText:[NSString stringWithFormat:@"%.01f", value]];
     return YES;
-}// return NO to not change text
+}
 
 
 - (IBAction)sliderValueChanged:(id)sender
 {
-    // Set the label text to the value of the slider as it changes
-  //    self.label.text = [NSString stringWithFormat:@"%f", self.slider.value];
+    // Set the label text to the value of the slider as it changes and recompute totatl
     [tipLabel setText: [NSString stringWithFormat:@"%@%%" , [NSNumber numberWithInt:self.tip.value]]];
     NSMutableString *fullString  = [NSMutableString stringWithString:[amt text]];
-    int value = fullString.intValue;
+    float value = fullString.floatValue;
     [self calculate:value];
 }
-
 
 -(IBAction)calc:(id)sender {
     [tip resignFirstResponder];
     [amt resignFirstResponder];
 }
 
--(void)calculate:(int)value {
+-(void)calculate:(float)value {
     float tot = (value * [tip value])/100.0 ;
-    [total setText: [[NSNumber numberWithFloat:tot] stringValue]];
+    [total setText: [NSString stringWithFormat: @"$%.2f", tot]];
 }
 
--(IBAction)reset{
-    [tip setValue:(10)];
-    [amt setText:(@"")];
-    [total setText:(@"")];
-    [tipLabel setText:@"10%"];
+
+-(IBAction)reset {
+    // Reset all fields to defaults
+    [self setDefaults];
 }
+
 @end
